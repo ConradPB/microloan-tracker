@@ -1,9 +1,6 @@
 from django.shortcuts import render
-
-# Create your views here.
-
-from django.shortcuts import render
-from django.http import HttpResponse
+from .models import Loan
 
 def index(request):
-    return HttpResponse("Welcome to the Loans app!")
+    loans = Loan.objects.all()
+    return render(request, 'loans/index.html', {'loans': loans})
