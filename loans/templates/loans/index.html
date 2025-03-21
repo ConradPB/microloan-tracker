@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Microloan Tracker</title>
+</head>
+<body>
+    <h1>Microloan Tracker</h1>
+    <ul>
+        {% for loan in loans %}
+            <li>{{ loan.borrower }} - ${{ loan.amount }} ({{ loan.date }})</li>
+        {% empty %}
+            <li>No loans yet.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
