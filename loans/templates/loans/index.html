@@ -94,6 +94,22 @@
             </div>
         </div>
     </form>
-   
+    <script>
+        function promptEdit(button) {
+            let form = button.form;
+            let borrower = prompt("Edit Borrower:", form.querySelector('[name=borrower]').value);
+            let amount = prompt("Edit Amount:", form.querySelector('[name=amount]').value);
+            let due_date = prompt("Edit Due Date (YYYY-MM-DD):", form.querySelector('[name=due_date]').value);
+            let status = prompt("Edit Status (Active/Paid):", form.querySelector('[name=status]').value);
+            if (borrower && amount && status) {
+                form.querySelector('[name=borrower]').value = borrower;
+                form.querySelector('[name=amount]').value = amount;
+                form.querySelector('[name=due_date]').value = due_date || '';
+                form.querySelector('[name=status]').value = status;
+            } else {
+                event.preventDefault();
+            }
+        }
+    </script>
 </body>
 </html>
