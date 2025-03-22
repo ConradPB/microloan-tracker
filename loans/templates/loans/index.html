@@ -3,6 +3,10 @@
 <head>
     <title>Microloan Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .total { font-size: 1.2em; color: #28a745; }
+        .list-group-item:hover { background-color: #f8f9fa; }
+    </style>
 </head>
 <body class="container mt-4">
     <h1 class="text-center mb-4">Microloan Tracker</h1>
@@ -16,15 +20,35 @@
                 </select>
             </form>
         </div>
+        <div class="col-md-8 text-end">
+            <p class="total">Total Amount: <strong>${{ total_amount|floatformat:2 }}</strong></p>
+        </div>
     </div>
     <div class="card">
         <ul class="list-group list-group-flush">
             {% for loan in loans %}
-                <li class="list-group-item">
-                    {{ loan.borrower }} - <strong>${{ loan.amount }}</strong> ({{ loan.date }}) - 
-                    <span class="badge {% if loan.status == 'Active' %}bg-success{% else %}bg-secondary{% endif %}">
-                        {{ loan.status }}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        {{ loan.borrower }} - <strong>${{ loan.amount }}</strong> ({{ loan.date }}) - 
+                        <span class="badge {% if loan.status == 'Active' %}bg-success{% else %}bg-secondary{% endif %}">
+                            {{ loan.status }}
+                        </span>
                     </span>
+                    <div>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="loan_id" value="{{ loan.id }}">
+                            <input type="hidden" name="borrower" value="{{ loan.borrower }}">
+                            <input type="hidden" name="amount" value="{{ loan.amount }}">
+                            <input type="hidden" name="status" value="{{ loan.status }}">
+                            <button type="submit" name="edit" class="btn btn-sm btn-warning" onclick="promptEdit(this)">Edit</button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="loan_id" value="{{ loan.id }}">
+                            <button type="submit" name="delete" class="btn btn-sm btn-danger" onclick="return confirm('Delete this loan?')">Delete</button>
+                        </form>
+                    </div>
                 </li>
             {% empty %}
                 <li class="list-group-item text-muted">No loans yet.</li>
@@ -47,9 +71,24 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-primary w-100">Add Loan</button>
+                <button type="submit" name="add" class="btn btn-primary w-100">Add Loan</button>
             </div>
         </div>
     </form>
+    <script>
+        function promptEdit(button) {
+            let form = button.form;
+            let borrower = prompt("Edit Borrower:", form.querySelector('[name=borrower]').value);
+            let amount = prompt("Edit Amount:", form.querySelector('[name=amount]').value);
+            let status = prompt("Edit Status (Active/Paid):", form.querySelector('[name=status]').value);
+            if (borrower && amount && status) {
+                form.querySelector('[name=borrower]').value = borrower;
+                form.querySelector('[name=amount]').value = amount;
+                form.querySelector('[name=status]').value = status;
+            } else {
+                event.preventDefault();
+            }
+        }
+    </script>
 </body>
 </html>
