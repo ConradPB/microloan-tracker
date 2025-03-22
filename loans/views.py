@@ -43,5 +43,6 @@ def index(request):
         'total_amount': total_amount,
         'active_total': active_total,
         'paid_total': paid_total,
-        'overdue': overdue
+        'overdue': overdue,
+        'today': timezone.now().date()
     })
