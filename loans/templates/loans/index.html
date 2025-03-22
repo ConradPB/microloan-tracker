@@ -2,6 +2,12 @@
 <html>
 <head>
     <title>Microloan Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 10px 0; }
+        form { margin-top: 20px; }
+    </style>
 </head>
 <body>
     <h1>Microloan Tracker</h1>
@@ -12,5 +18,11 @@
             <li>No loans yet.</li>
         {% endfor %}
     </ul>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="borrower" placeholder="Borrower Name" required>
+        <input type="number" name="amount" step="0.01" placeholder="Amount" required>
+        <button type="submit">Add Loan</button>
+    </form>
 </body>
 </html>
