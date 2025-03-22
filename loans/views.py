@@ -7,6 +7,7 @@ def index(request):
         if 'add' in request.POST:
             borrower = request.POST.get('borrower')
             amount = request.POST.get('amount')
+            due_date = request.POST.get('due_date') or None
             status = request.POST.get('status')
             if borrower and amount and status:
                 Loan.objects.create(borrower=borrower, amount=amount, status=status)
