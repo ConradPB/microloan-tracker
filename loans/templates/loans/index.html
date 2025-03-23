@@ -110,21 +110,42 @@
         {{ chart_data|json_script }}
     </script>
     <script>
-        const chartData = JSON.parse(document.getElementById('chart-data').textContent);
-        const ctx = document.getElementById('loanChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Active', 'Paid'],
-                datasets: [{
-                    data: [chartData.active, chartData.paid],
-                    backgroundColor: ['#28a745', '#6c757d']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'top' } }
+        function promptEdit(button) {
+            let form = button.form;
+            let borrower = prompt("Edit Borrower:", form.querySelector('[name=borrower]').value);
+            let amount = prompt("Edit Amount:", form.querySelector('[name=amount]').value);
+            let due_date = prompt("Edit Due Date (YYYY-MM-DD):", form.querySelector('[name=due_date]').value);
+            let status = prompt("Edit Status (Active/Paid):", form.querySelector('[name=status]').value);
+            let category = prompt("Edit Category (Personal/Business):", form.querySelector('[name=category]').value);
+            if (borrower && amount && status && category) {
+                form.querySelector('[name=borrower]').value = borrower;
+                form.querySelector('[name=amount]').value = amount;
+                form.querySelector('[name=due_date]').value = due_date || '';
+                form.querySelector('[name=status]').value = status;
+                form.querySelector('[name=category]').value = category;
+            } else {
+                event.preventDefault();
             }
+        }
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartDataRaw = document.getElementById('chart-data').textContent;
+            const chartData = JSON.parse(chartDataRaw || '{"active": 0, "paid": 0}');
+            const ctx = document.getElementById('loanChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Active', 'Paid'],
+                    datasets: [{
+                        data: [chartData.active, chartData.paid],
+                        backgroundColor: ['#28a745', '#6c757d']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'top' } }
+                }
+            });
         });
     </script>
 </body>
