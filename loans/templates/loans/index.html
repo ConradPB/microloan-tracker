@@ -172,7 +172,24 @@
                 document.cookie = `theme=${newTheme}; path=/; max-age=31536000`; // 1 year
             });
 
-            
+            // Chart setup
+            const chartDataRaw = document.getElementById('chart-data').textContent;
+            const chartData = JSON.parse(chartDataRaw);
+            const ctx = document.getElementById('loanChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Active', 'Paid'],
+                    datasets: [{
+                        data: [chartData.active || 0, chartData.paid || 0],
+                        backgroundColor: ['#28a745', '#6c757d']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'top' } }
+                }
+            });
         });
     </script>
 </body>
