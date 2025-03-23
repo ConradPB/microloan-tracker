@@ -152,6 +152,80 @@
         </form>
     </div>
     {{ chart_data|json_script:"chart-data" }}
-   
+    <script>
+        function promptEdit(button) {
+            let form = button.form;
+            let borrower = prompt("Edit Borrower:", form.querySelector('[name=borrower]').value);
+            let amount = prompt("Edit Amount:", form.querySelector('[name=amount]').value);
+            let due_date = prompt("Edit Due Date (YYYY-MM-DD):", form.querySelector('[name=due_date]').value);
+            let status = prompt("Edit Status (Active/Paid):", form.querySelector('[name=status]').value);
+            let category = prompt("Edit Category (Personal/Business):", form.querySelector('[name=category]').value);
+
+            if (!borrower || borrower.trim() === '') {
+                alert("Borrower name cannot be empty.");
+                return;
+            }
+            if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+                alert("Amount must be a positive number.");
+                return;
+            }
+            const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+            if (due_date && !dateRegex.test(due_date)) {
+                alert("Invalid date format. Please use YYYY-MM-DD (e.g., 2025-08-20).");
+                return;
+            }
+            if (!['Active', 'Paid'].includes(status)) {
+                alert("Status must be 'Active' or 'Paid'.");
+                return;
+            }
+            if (!['Personal', 'Business'].includes(category)) {
+                alert("Category must be 'Personal' or 'Business'.");
+                return;
+            }
+
+            form.querySelector('[name=borrower]').value = borrower;
+            form.querySelector('[name=amount]').value = amount;
+            form.querySelector('[name=due_date]').value = due_date || '';
+            form.querySelector('[name=status]').value = status;
+            form.querySelector('[name=category]').value = category;
+            form.submit();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const html = document.documentElement;
+            const savedTheme = document.cookie.split('; ').find(row => row.startsWith('theme='));
+            const initialTheme = savedTheme ? savedTheme.split('=')[1] : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            html.setAttribute('data-theme', initialTheme);
+            themeIcon.textContent = initialTheme === 'light' ? '🌙' : '☀️';
+
+            toggleButton.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                html.setAttribute('data-theme', newTheme);
+                themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀️';
+                document.cookie = `theme=${newTheme}; path=/; max-age=31536000`;
+            });
+
+            const chartDataRaw = document.getElementById('chart-data').textContent;
+            const chartData = JSON.parse(chartDataRaw);
+            const ctx = document.getElementById('loanChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Active', 'Paid'],
+                    datasets: [{
+                        data: [chartData.active || 0, chartData.paid || 0],
+                        backgroundColor: ['#28a745', '#6c757d']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'top' } }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
