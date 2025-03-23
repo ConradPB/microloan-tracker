@@ -9,7 +9,7 @@
         .overdue { color: #dc3545; }
         .card-stats { background-color: #f8f9fa; }
         .list-group-item:hover { background-color: #f1f3f5; }
-        .chart-container { max-width: 400px; margin: 20px auto; }
+        .chart-container { max-width: 400px; margin: 20px auto; border: 2px solid red; height: 300px; }
     </style>
 </head>
 <body class="container mt-4">
@@ -38,6 +38,8 @@
     <div class="chart-container">
         <canvas id="loanChart"></canvas>
     </div>
+    <p>Raw Chart Data: <span id="raw-data">{{ chart_data|json_script }}</span></p>
+    <p>Parsed Chart Data: Active = <span id="active-data"></span>, Paid = <span id="paid-data"></span></p>
     <div class="card">
         <ul class="list-group list-group-flush">
             {% for loan in loans %}
@@ -106,9 +108,7 @@
             </div>
         </div>
     </form>
-    <script id="chart-data" type="application/json">
-        {{ chart_data|json_script }}
-    </script>
+    {{ chart_data|json_script:"chart-data" }}
     <script>
         function promptEdit(button) {
             let form = button.form;
@@ -127,25 +127,35 @@
                 event.preventDefault();
             }
         }
-    
+
         document.addEventListener('DOMContentLoaded', function() {
             const chartDataRaw = document.getElementById('chart-data').textContent;
-            const chartData = JSON.parse(chartDataRaw || '{"active": 0, "paid": 0}');
-            const ctx = document.getElementById('loanChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Active', 'Paid'],
-                    datasets: [{
-                        data: [chartData.active, chartData.paid],
-                        backgroundColor: ['#28a745', '#6c757d']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { position: 'top' } }
-                }
-            });
+            console.log('Raw Data:', chartDataRaw);
+            const chartData = JSON.parse(chartDataRaw);
+            console.log('Parsed Data:', chartData);
+
+            document.getElementById('active-data').textContent = chartData.active;
+            document.getElementById('paid-data').textContent = chartData.paid;
+
+            const ctx = document.getElementById('loanChart');
+            if (!ctx) {
+                console.error('Canvas not found!');
+            } else {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['Active', 'Paid'],
+                        datasets: [{
+                            data: [chartData.active || 0, chartData.paid || 0],
+                            backgroundColor: ['#28a745', '#6c757d']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'top' } }
+                    }
+                });
+            }
         });
     </script>
 </body>
