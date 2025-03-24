@@ -33,7 +33,6 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = ['https://microloan-tracker.vercel.app']
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
