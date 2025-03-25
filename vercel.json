@@ -4,16 +4,19 @@
         {
             "src": "microloan_tracker/wsgi.py",
             "use": "@vercel/python",
-            "config": {"maxLambdaSize": "15mb", "runtime": "python3.12"}
-        },
-        {
-            "src": "build_files.sh",
-            "use": "@vercel/static-build",
-            "config": {"distDir": "staticfiles"}
+            "config": {
+                "maxLambdaSize": "15mb",
+                "runtime": "python3.12",
+                "buildCommand": "python -m pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+            }
         }
     ],
     "routes": [
         {"src": "/static/(.*)", "dest": "/staticfiles/$1"},
         {"src": "/(.*)", "dest": "microloan_tracker/wsgi.py"}
-    ]
+    ],
+    "env": {
+        "DJANGO_SETTINGS_MODULE": "microloan_tracker.settings",
+        "PYTHONPATH": "/vercel/path0"
+    }
 }
