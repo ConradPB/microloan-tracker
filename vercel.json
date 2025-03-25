@@ -2,13 +2,11 @@
     "version": 2,
     "builds": [
         {
-            "src": "build.sh",
-            "use": "@vercel/static-build",
-            "config": {"distDir": "staticfiles"}
-        },
-        {
             "src": "microloan_tracker/wsgi.py",
-            "use": "@vercel/python"
+            "use": "@vercel/python",
+            "config": {
+                "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+            }
         }
     ],
     "routes": [
