@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def index(request):
-    loans = Loan.objects.filter(user=request.user)
     if request.method == 'POST':
         if 'add' in request.POST:
             borrower = request.POST.get('borrower')
@@ -15,14 +14,21 @@ def index(request):
             due_date = request.POST.get('due_date') or None
             category = request.POST.get('category')
             if borrower and amount and status and category:
-                Loan.objects.create(borrower=borrower, amount=amount, status=status, due_date=due_date, category=category)
+                Loan.objects.create(
+                    user=request.user,  # Tied to logged-in user
+                    borrower=borrower,
+                    amount=amount,
+                    status=status,
+                    due_date=due_date,
+                    category=category
+                )
         elif 'delete' in request.POST:
             loan_id = request.POST.get('loan_id')
-            loan = get_object_or_404(Loan, id=loan_id)
+            loan = get_object_or_404(Loan, id=loan_id, user=request.user)  # Only user’s loans
             loan.delete()
         elif 'edit' in request.POST:
             loan_id = request.POST.get('loan_id')
-            loan = get_object_or_404(Loan, id=loan_id)
+            loan = get_object_or_404(Loan, id=loan_id, user=request.user)  # Only user’s loans
             loan.borrower = request.POST.get('borrower')
             loan.amount = request.POST.get('amount')
             loan.status = request.POST.get('status')
@@ -31,17 +37,19 @@ def index(request):
             loan.save()
         elif 'toggle' in request.POST:
             loan_id = request.POST.get('loan_id')
-            loan = get_object_or_404(Loan, id=loan_id)
+            loan = get_object_or_404(Loan, id=loan_id, user=request.user)  # Only user’s loans
             loan.status = 'Paid' if loan.status == 'Active' else 'Active'
             loan.save()
         return redirect('index')
     
     filter_status = request.GET.get('status', '')
-    loans = Loan.objects.filter(status=filter_status) if filter_status else Loan.objects.all()
+    loans = Loan.objects.filter(user=request.user)  # Base filter by user
+    if filter_status:
+        loans = loans.filter(status=filter_status)  # Then apply status filter
     total_amount = loans.aggregate(models.Sum('amount'))['amount__sum'] or 0
-    active_total = Loan.objects.filter(status='Active').aggregate(models.Sum('amount'))['amount__sum'] or 0
-    paid_total = Loan.objects.filter(status='Paid').aggregate(models.Sum('amount'))['amount__sum'] or 0
-    overdue = Loan.objects.filter(status='Active', due_date__lt=timezone.now().date()).count()
+    active_total = loans.filter(status='Active').aggregate(models.Sum('amount'))['amount__sum'] or 0
+    paid_total = loans.filter(status='Paid').aggregate(models.Sum('amount'))['amount__sum'] or 0
+    overdue = loans.filter(status='Active', due_date__lt=timezone.now().date()).count()
     chart_data = {
         'active': float(active_total),
         'paid': float(paid_total)
