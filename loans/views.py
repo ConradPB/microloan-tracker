@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db import models
 from django.utils import timezone
 from .models import Loan
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def index(request):
+    loans = Loan.objects.filter(user=request.user)
     if request.method == 'POST':
         if 'add' in request.POST:
             borrower = request.POST.get('borrower')
