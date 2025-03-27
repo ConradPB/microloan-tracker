@@ -86,3 +86,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Vercel needs this for col
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'  # After login, go to index
+LOGOUT_REDIRECT_URL = '/login/'  # After logout, go to login
