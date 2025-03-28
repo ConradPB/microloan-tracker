@@ -6,6 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 
+def landing(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+    return render(request, 'loans/landing.html')
 @login_required
 def index(request):
     if request.method == 'POST':
