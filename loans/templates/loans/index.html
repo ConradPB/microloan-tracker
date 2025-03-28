@@ -43,9 +43,7 @@
 </head>
 <body>
     {% if user.is_authenticated %}
-        <div class="position-absolute top-0 end-0 p-2">
-            <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
-        </div>
+        
         <button class="btn btn-secondary theme-toggle" id="themeToggle" aria-label="Toggle Theme"><span id="themeIcon"></span></button>
         <div class="container mt-4">
             <h1 class="text-center mb-4">Microloan Tracker</h1>
