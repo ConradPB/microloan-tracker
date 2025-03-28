@@ -3,6 +3,8 @@ from django.db import models
 from django.utils import timezone
 from .models import Loan
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 
 @login_required
 def index(request):
@@ -64,3 +66,4 @@ def index(request):
         'today': timezone.now().date(),
         'chart_data': chart_data
     })
+
