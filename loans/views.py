@@ -67,3 +67,13 @@ def index(request):
         'chart_data': chart_data
     })
 
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Auto-login after signup
+            return redirect('index')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
