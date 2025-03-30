@@ -42,5 +42,118 @@
         .logout-btn { margin-top: 10px; }
     </style>
 </head>
-
+<body>
+    {% if user.is_authenticated %}
+        <button class="btn btn-secondary theme-toggle" id="themeToggle" aria-label="Toggle Theme"><span id="themeIcon"></span></button>
+        <div class="container mt-4">
+            <h1 class="text-center mb-3">Microloan Tracker - Welcome, {{ user.username }}</h1>
+            <div class="text-center logout-btn">
+                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary">Logout</button>
+                </form>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <form method="get">
+                        <select name="status" class="form-select" onchange="this.form.submit()">
+                            <option value="">All Loans</option>
+                            <option value="Active" {% if filter_status == "Active" %}selected{% endif %}>Active</option>
+                            <option value="Paid" {% if filter_status == "Paid" %}selected{% endif %}>Paid</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="col-md-8">
+                    <div class="card card-stats p-3">
+                        <div class="row text-center">
+                            <div class="col"><span class="total">Total: <strong>${{ total_amount|floatformat:2 }}</strong></span></div>
+                            <div class="col"><span class="total text-success">Active: ${{ active_total|floatformat:2 }}</span></div>
+                            <div class="col"><span class="total text-secondary">Paid: ${{ paid_total|floatformat:2 }}</span></div>
+                            <div class="col"><span class="total overdue">Overdue: {{ overdue }}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="loanChart"></canvas>
+            </div>
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    {% for loan in loans %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center {% if loan.status == 'Active' and loan.due_date and loan.due_date < today %}bg-danger-subtle{% endif %}">
+                            <span>
+                                {{ loan.borrower }} - <strong>${{ loan.amount }}</strong> ({{ loan.date }}) 
+                                {% if loan.due_date %} - Due: {{ loan.due_date }}{% endif %} - 
+                                <span class="badge {% if loan.status == 'Active' %}bg-success{% else %}bg-secondary{% endif %}">
+                                    {{ loan.status }}
+                                </span> - {{ loan.category }}
+                            </span>
+                            <div>
+                                <form method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="loan_id" value="{{ loan.id }}">
+                                    <button type="submit" name="toggle" class="btn btn-sm btn-info">Toggle</button>
+                                </form>
+                                <form method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="loan_id" value="{{ loan.id }}">
+                                    <input type="hidden" name="borrower" value="{{ loan.borrower }}">
+                                    <input type="hidden" name="amount" value="{{ loan.amount }}">
+                                    <input type="hidden" name="status" value="{{ loan.status }}">
+                                    <input type="hidden" name="due_date" value="{{ loan.due_date|date:'Y-m-d' }}">
+                                    <input type="hidden" name="category" value="{{ loan.category }}">
+                                    <button type="submit" name="edit" class="btn btn-sm btn-warning" onclick="promptEdit(this)">Edit</button>
+                                </form>
+                                <form method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="loan_id" value="{{ loan.id }}">
+                                    <button type="submit" name="delete" class="btn btn-sm btn-danger" onclick="return confirm('Delete this loan?')">Delete</button>
+                                </form>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No loans yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        <input type="text" name="borrower" class="form-control" placeholder="Borrower" required>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="amount" step="0.01" class="form-control" placeholder="Amount" required>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="date" name="due_date" class="form-control" placeholder="Due Date">
+                    </div>
+                    <div class="col-md-2">
+                        <select name="status" class="form-select" required>
+                            <option value="Active">Active</option>
+                            <option value="Paid">Paid</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="category" class="form-select" required>
+                            <option value="Personal">Personal</option>
+                            <option value="Business">Business</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" name="add" class="btn btn-primary w-100">Add Loan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {{ chart_data|json_script:"chart-data" }}
+        
+    {% else %}
+        <div class="container mt-5 text-center">
+            <h2>Please log in to access the Microloan Tracker</h2>
+            <a href="{% url 'login' %}" class="btn btn-primary mt-3">Login</a>
+            <p class="mt-2">New here? <a href="{% url 'signup' %}">Sign Up</a></p>
+        </div>
+    {% endif %}
+</body>
 </html>
