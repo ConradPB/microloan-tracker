@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <a href="{% url 'landing' %}" class="home-icon">🏠</a>
+    <div class="login-container">
+        <h2 class="text-center">Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-login w-100 text-white">Login</button>
+        </form>
+        <p class="text-center signup-prompt">Don’t have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+    </div>
+</body>
+</html>
