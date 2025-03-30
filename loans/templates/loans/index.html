@@ -6,23 +6,30 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-color: #fff;
-            --text-color: #333;
-            --card-bg: #f8f9fa;
-            --btn-primary-bg: #007bff;
-            --btn-primary-text: #fff;
-            --badge-success-bg: #28a745;
-            --badge-secondary-bg: #6c757d;
-        }
-        [data-theme="dark"] {
-            --bg-color: #1a1a1a;
-            --text-color: #e0e0e0;
-            --card-bg: #2c2c2c;
-            --btn-primary-bg: #4dabf7;
-            --btn-primary-text: #fff;
-            --badge-success-bg: #55e080;
-            --badge-secondary-bg: #adb5bd;
-        }
+    --bg-start: #f5f7fa;          /* For consistency with signup/login */
+    --bg-color: #fff;
+    --text-color: #333;
+    --card-bg: #f8f9fa;
+    --btn-primary-bg: #007bff;
+    --btn-primary-text: #fff;
+    --badge-success-bg: #28a745;
+    --badge-secondary-bg: #6c757d;
+    --shadow: rgba(0, 0, 0, 0.1); /* Unused here, but syncs app-wide */
+    --link-color: #007bff;        /* Unused here, but syncs app-wide */
+}
+[data-theme="dark"] {
+    --bg-start: #1a1a1a;          /* For consistency with signup/login */
+    --bg-color: #1a1a1a;
+    --text-color: #e0e0e0;
+    --card-bg: #2c2c2c;
+    --btn-primary-bg: #4dabf7;
+    --btn-primary-text: #fff;
+    --badge-success-bg: #55e080;
+    --badge-secondary-bg: #adb5bd;
+    --shadow: rgba(0, 0, 0, 0.3); /* Unused here, but syncs app-wide */
+    --link-color: #4dabf7;        /* Unused here, but syncs app-wide */
+}
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
