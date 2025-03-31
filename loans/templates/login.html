@@ -1,98 +1,147 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Login - Microloan Tracker</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --bg-start: #f5f7fa;
-            --bg-end: #c3cfe2;
-            --card-bg: #fff;
-            --text-color: #555;
-            --shadow: rgba(0, 0, 0, 0.1);
-            --link-color: #007bff;
-        }
-        [data-theme="dark"] {
-            --bg-start: #1a1a1a;
-            --bg-end: #2c2c2c;
-            --card-bg: #333;
-            --text-color: #e0e0e0;
-            --shadow: rgba(0, 0, 0, 0.3);
-            --link-color: #4dabf7;
-        }
-        body {
-            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-color);
-            transition: all 0.3s ease;
-        }
-        .login-container {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px var(--shadow);
-            max-width: 450px;
-            width: 100%;
-        }
-        .login-container h2 {
-            color: #1e3c72;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-        .form-control { margin-bottom: 15px; padding: 10px; }
-        .btn-login {
-            background-color: #007bff;
-            border: none;
-            padding: 12px;
-            font-weight: 500;
-        }
-        .home-icon {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 1.5rem;
-            color: #1e3c72;
-            text-decoration: none;
-        }
-        .signup-prompt { margin-top: 20px; }
-        .signup-prompt a { color: var(--link-color); font-weight: 500; }
-        .theme-toggle { position: absolute; top: 10px; right: 10px; font-size: 1.2em; padding: 5px 10px; }
+      :root {
+        --bg-start: #f5f7fa;
+        --bg-end: #c3cfe2;
+        --card-bg: #fff;
+        --text-color: #555;
+        --shadow: rgba(0, 0, 0, 0.1);
+        --link-color: #007bff;
+        --btn-primary-bg: #007bff;
+        --btn-primary-text: #fff;
+      }
+      [data-theme="dark"] {
+        --bg-start: #1a1a1a;
+        --bg-end: #2c2c2c;
+        --card-bg: #333;
+        --text-color: #e0e0e0;
+        --shadow: rgba(0, 0, 0, 0.3);
+        --link-color: #4dabf7;
+        --btn-primary-bg: #4dabf7;
+        --btn-primary-text: #fff;
+      }
+      body {
+        background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+      }
+      .login-container {
+        background: var(--card-bg);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px var(--shadow);
+        max-width: 450px;
+        width: 100%;
+      }
+      .login-container h2 {
+        color: #1e3c72;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+      .form-control {
+        margin-bottom: 15px;
+        padding: 10px;
+      }
+      .btn-login {
+        background-color: #007bff;
+        border: none;
+        padding: 12px;
+        font-weight: 500;
+      }
+      .home-icon {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 1.5rem;
+        color: #1e3c72;
+        text-decoration: none;
+      }
+      .signup-prompt {
+        margin-top: 20px;
+      }
+      .signup-prompt a {
+        color: var(--link-color);
+        font-weight: 500;
+      }
+      .theme-toggle {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 1.2em;
+        padding: 5px 10px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <a href="{% url 'landing' %}" class="home-icon">🏠</a>
-    <button class="btn btn-secondary theme-toggle" id="themeToggle" aria-label="Toggle Theme"><span id="themeIcon"></span></button>
+    <button
+      class="btn btn-secondary theme-toggle"
+      id="themeToggle"
+      aria-label="Toggle Theme"
+    >
+      <span id="themeIcon"></span>
+    </button>
     <div class="login-container">
-        <h2 class="text-center">Login</h2>
-        <form method="post">
-            {% csrf_token %}
-            <input type="text" name="username" class="form-control" placeholder="Username" required>
-            <input type="password" name="password" class="form-control" placeholder="Password" required>
-            <button type="submit" class="btn btn-login w-100 text-white">Login</button>
-        </form>
-        <p class="text-center signup-prompt">Don’t have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+      <h2 class="text-center">Login</h2>
+      <form method="post">
+        {% csrf_token %}
+        <input
+          type="text"
+          name="username"
+          class="form-control"
+          placeholder="Username"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          class="form-control"
+          placeholder="Password"
+          required
+        />
+        <button type="submit" class="btn btn-login w-100 text-white">
+          Login
+        </button>
+      </form>
+      <p class="text-center signup-prompt">
+        Don’t have an account? <a href="{% url 'signup' %}">Sign Up</a>
+      </p>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleButton = document.getElementById('themeToggle');
-            const themeIcon = document.getElementById('themeIcon');
-            const html = document.documentElement;
-            const savedTheme = document.cookie.split('; ').find(row => row.startsWith('theme='));
-            const initialTheme = savedTheme ? savedTheme.split('=')[1] : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            html.setAttribute('data-theme', initialTheme);
-            themeIcon.textContent = initialTheme === 'light' ? '🌙' : '☀️';
+      document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("themeToggle");
+        const themeIcon = document.getElementById("themeIcon");
+        const html = document.documentElement;
+        const savedTheme = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("theme="));
+        const initialTheme = savedTheme
+          ? savedTheme.split("=")[1]
+          : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        html.setAttribute("data-theme", initialTheme);
+        themeIcon.textContent = initialTheme === "light" ? "🌙" : "☀️";
 
-            toggleButton.addEventListener('click', function() {
-                const currentTheme = html.getAttribute('data-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                html.setAttribute('data-theme', newTheme);
-                themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀️';
-                document.cookie = `theme=${newTheme}; path=/; max-age=31536000`;
-            });
+        toggleButton.addEventListener("click", function () {
+          const currentTheme = html.getAttribute("data-theme");
+          const newTheme = currentTheme === "light" ? "dark" : "light";
+          html.setAttribute("data-theme", newTheme);
+          themeIcon.textContent = newTheme === "light" ? "🌙" : "☀️";
+          document.cookie = `theme=${newTheme}; path=/; max-age=31536000`;
         });
+      });
     </script>
-</body>
+  </body>
 </html>
