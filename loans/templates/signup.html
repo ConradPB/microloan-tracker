@@ -80,4 +80,47 @@
       }
     </style>
   </head>
+  <body>
+    <button
+      class="btn btn-secondary theme-toggle"
+      id="themeToggle"
+      aria-label="Toggle Theme"
+    >
+      <span id="themeIcon"></span>
+    </button>
+    <div class="signup-container">
+      <h2 class="text-center">Sign Up</h2>
+      <p class="text-center">Join now to track your loans securely.</p>
+      <form method="post">
+        {% csrf_token %}
+        <input
+          type="text"
+          name="username"
+          class="form-control"
+          placeholder="Username"
+          required
+        />
+        <input
+          type="password"
+          name="password1"
+          class="form-control"
+          placeholder="Password"
+          required
+        />
+        <input
+          type="password"
+          name="password2"
+          class="form-control"
+          placeholder="Confirm Password"
+          required
+        />
+        <button type="submit" class="btn btn-signup w-100 text-white">
+          Create Account
+        </button>
+      </form>
+      <p class="text-center login-prompt">
+        Already have an account? <a href="{% url 'login' %}">Login</a>
+      </p>
+    </div>
+  </body>
 </html>
