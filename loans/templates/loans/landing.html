@@ -1,117 +1,158 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Microloan Tracker</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-    --bg-start: #1e3c72;
-    --bg-end: #2a5298;
-    --text-color: #fff;
-    --shadow: rgba(0, 0, 0, 0.3);
-    --footer-bg: rgba(0, 0, 0, 0.2);
-    --btn-primary-bg: #007bff;
-    --btn-primary-text: #fff;
-    --link-color: #007bff;
-}
-[data-theme="dark"] {
-    --bg-start: #0f1c38;
-    --bg-end: #1a2f5b;
-    --text-color: #e0e0e0;
-    --shadow: rgba(0, 0, 0, 0.5);
-    --footer-bg: rgba(0, 0, 0, 0.4);
-    --btn-primary-bg: #4dabf7;
-    --btn-primary-text: #fff;
-    --link-color: #4dabf7;
-}
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-        }
-        .hero {
-            text-align: center;
-            padding: 100px 20px;
-            flex-grow: 1;
-        }
+      :root {
+        --bg-start: #1e3c72;
+        --bg-end: #2a5298;
+        --text-color: #fff;
+        --shadow: rgba(0, 0, 0, 0.3);
+        --footer-bg: rgba(0, 0, 0, 0.2);
+        --btn-primary-bg: #007bff;
+        --btn-primary-text: #fff;
+        --link-color: #007bff;
+      }
+      [data-theme="dark"] {
+        --bg-start: #0f1c38;
+        --bg-end: #1a2f5b;
+        --text-color: #e0e0e0;
+        --shadow: rgba(0, 0, 0, 0.5);
+        --footer-bg: rgba(0, 0, 0, 0.4);
+        --btn-primary-bg: #4dabf7;
+        --btn-primary-text: #fff;
+        --link-color: #4dabf7;
+      }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+      }
+      .hero {
+        text-align: center;
+        padding: 100px 20px;
+        flex-grow: 1;
+      }
+      .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px var(--shadow);
+      }
+      .hero p {
+        font-size: 1.5rem;
+        margin-bottom: 40px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .btn-cta {
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        border-radius: 30px;
+        transition: transform 0.2s;
+      }
+      .btn-cta:hover {
+        transform: scale(1.05);
+      }
+      .btn-signup {
+        background-color: #28a745;
+        border: none;
+      }
+      .btn-login {
+        background-color: #007bff;
+        border: none;
+        margin-left: 20px;
+      }
+      .theme-toggle {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 1.2em;
+        padding: 5px 10px;
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 0.9rem;
+        background: var(--footer-bg);
+      }
+      @media (max-width: 768px) {
         .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px var(--shadow);
+          font-size: 2.5rem;
         }
         .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+          font-size: 1.2rem;
         }
         .btn-cta {
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 30px;
-            transition: transform 0.2s;
+          display: block;
+          width: 200px;
+          margin: 10px auto;
         }
-        .btn-cta:hover { transform: scale(1.05); }
-        .btn-signup { background-color: #28a745; border: none; }
-        .btn-login { background-color: #007bff; border: none; margin-left: 20px; }
-        .theme-toggle {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 1.2em;
-            padding: 5px 10px;
+        .btn-login {
+          margin-left: 0;
         }
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.9rem;
-            background: var(--footer-bg);
-        }
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .hero p { font-size: 1.2rem; }
-            .btn-cta { display: block; width: 200px; margin: 10px auto; }
-            .btn-login { margin-left: 0; }
-        }
+      }
     </style>
-</head>
-<body>
-    <button class="btn btn-secondary theme-toggle" id="themeToggle" aria-label="Toggle Theme"><span id="themeIcon"></span></button>
+  </head>
+  <body>
+    <button
+      class="btn btn-secondary theme-toggle"
+      id="themeToggle"
+      aria-label="Toggle Theme"
+    >
+      <span id="themeIcon"></span>
+    </button>
     <div class="hero">
-        <h1>Microloan Tracker</h1>
-        <p>Manage Loans, Master Control—Your Money, Your Way.</p>
-        <p>Securely track loans, due dates, and payments with a sleek dashboard. Free to start—join now!</p>
-        <a href="{% url 'signup' %}" class="btn btn-signup btn-cta text-white">Sign Up</a>
-        <a href="{% url 'login' %}" class="btn btn-login btn-cta text-white">Login</a>
+      <h1>Microloan Tracker</h1>
+      <p>Manage Loans, Master Control—Your Money, Your Way.</p>
+      <p>
+        Securely track loans, due dates, and payments with a sleek dashboard.
+        Free to start—join now!
+      </p>
+      <a href="{% url 'signup' %}" class="btn btn-signup btn-cta text-white"
+        >Sign Up</a
+      >
+      <a href="{% url 'login' %}" class="btn btn-login btn-cta text-white"
+        >Login</a
+      >
     </div>
     <footer>
-        <p>Created by Conrad | Powered by xAI</p>
+      <p>Created by Conrad | Powered by xAI</p>
     </footer>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleButton = document.getElementById('themeToggle');
-            const themeIcon = document.getElementById('themeIcon');
-            const html = document.documentElement;
-            const savedTheme = document.cookie.split('; ').find(row => row.startsWith('theme='));
-            const initialTheme = savedTheme ? savedTheme.split('=')[1] : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            html.setAttribute('data-theme', initialTheme);
-            themeIcon.textContent = initialTheme === 'light' ? '🌙' : '☀️';
+      document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("themeToggle");
+        const themeIcon = document.getElementById("themeIcon");
+        const html = document.documentElement;
+        const savedTheme = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("theme="));
+        const initialTheme = savedTheme
+          ? savedTheme.split("=")[1]
+          : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        html.setAttribute("data-theme", initialTheme);
+        themeIcon.textContent = initialTheme === "light" ? "🌙" : "☀️";
 
-            toggleButton.addEventListener('click', function() {
-                const currentTheme = html.getAttribute('data-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                html.setAttribute('data-theme', newTheme);
-                themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀️';
-                document.cookie = `theme=${newTheme}; path=/; max-age=31536000`;
-            });
+        toggleButton.addEventListener("click", function () {
+          const currentTheme = html.getAttribute("data-theme");
+          const newTheme = currentTheme === "light" ? "dark" : "light";
+          html.setAttribute("data-theme", newTheme);
+          themeIcon.textContent = newTheme === "light" ? "🌙" : "☀️";
+          document.cookie = `theme=${newTheme}; path=/; max-age=31536000`;
         });
+      });
     </script>
-</body>
+  </body>
 </html>
