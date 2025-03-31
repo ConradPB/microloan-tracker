@@ -6,6 +6,47 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <style>
+      :root {
+        --bg-start: #f5f7fa;
+        --bg-end: #c3cfe2;
+        --card-bg: #fff;
+        --text-color: #555;
+        --shadow: rgba(0, 0, 0, 0.1);
+        --link-color: #007bff;
+        --btn-primary-bg: #007bff;
+        --btn-primary-text: #fff;
+        --heading-color: #1e3c72;
+      }
+      [data-theme="dark"] {
+        --bg-start: #1a1a1a;
+        --bg-end: #2c2c2c;
+        --card-bg: #333;
+        --text-color: #e0e0e0;
+        --shadow: rgba(0, 0, 0, 0.3);
+        --link-color: #4dabf7;
+        --btn-primary-bg: #4dabf7;
+        --btn-primary-text: #fff;
+        --heading-color: #e0e0e0;
+      }
+      body {
+        background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+      }
+      .signup-container {
+        background: var(--card-bg);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px var(--shadow);
+        max-width: 450px;
+        width: 100%;
+      }
+    </style>
   </head>
   <body>
     <button
