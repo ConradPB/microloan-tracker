@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # Good for prod, but set True temporarily if needed for Vercel logs
+DEBUG = False  # Good for prod, but set True temporarily if needed for Vercel logs
 
 ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://microloan-tracker.vercel.app']
