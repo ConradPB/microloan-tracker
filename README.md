@@ -85,4 +85,8 @@ MIT License - feel free to use and adapt.
 
 ## Contact
 
-[Your Name] - [Your Email] - [GitHub: ConradPB](https://github.com/ConradPB)
+Name: Conrad Philip B. M
+
+Email: cpbmbaz57@gmail.com
+
+GitHub: ConradPB (https://github.com/ConradPB)
