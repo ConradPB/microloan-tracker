@@ -5,11 +5,14 @@ from .models import Loan
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from datetime import datetime, timedelta  # For duplicate check
+from decimal import Decimal  # For DecimalField
 
 def landing(request):
     if request.user.is_authenticated:
         return redirect('index')
     return render(request, 'loans/landing.html')
+
 @login_required
 def index(request):
     if request.method == 'POST':
@@ -20,14 +23,29 @@ def index(request):
             due_date = request.POST.get('due_date') or None
             category = request.POST.get('category')
             if borrower and amount and status and category:
-                Loan.objects.create(
-                    user=request.user,  # Tied to logged-in user
+                # Convert amount to Decimal for DecimalField
+                amount = Decimal(amount)
+                # Check for duplicate within last 5 seconds
+                recent_time = datetime.now() - timedelta(seconds=5)
+                if Loan.objects.filter(
+                    user=request.user,
                     borrower=borrower,
                     amount=amount,
                     status=status,
                     due_date=due_date,
-                    category=category
-                )
+                    category=category,
+                    created_at__gte=recent_time
+                ).exists():
+                    pass  # Skip duplicate—could add error message here
+                else:
+                    Loan.objects.create(
+                        user=request.user,  # Tied to logged-in user
+                        borrower=borrower,
+                        amount=amount,
+                        status=status,
+                        due_date=due_date,
+                        category=category
+                    )
         elif 'delete' in request.POST:
             loan_id = request.POST.get('loan_id')
             loan = get_object_or_404(Loan, id=loan_id, user=request.user)  # Only user’s loans
