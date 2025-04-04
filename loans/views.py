@@ -5,8 +5,8 @@ from .models import Loan
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from datetime import datetime, timedelta  # For duplicate check
-from decimal import Decimal  # For DecimalField
+from datetime import datetime, timedelta  
+from decimal import Decimal  
 
 def landing(request):
     if request.user.is_authenticated:
