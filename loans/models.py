@@ -10,7 +10,7 @@ class Loan(models.Model):
     due_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=10, choices=[('Active', 'Active'), ('Paid', 'Paid')], default='Active')
     category = models.CharField(max_length=20, choices=[('Personal', 'Personal'), ('Business', 'Business')], default='Personal')
-    created_at = models.DateTimeField(default=timezone.now) 
+    created_at = models.DateTimeField(auto_now_add=True) 
 
     def __str__(self):
         return f"{self.borrower} - ${self.amount} ({self.status})"
